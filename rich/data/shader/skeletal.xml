@@ -1,0 +1,58 @@
+<shader>
+  <sampler name ="gBaseTex">
+    <wrap_s>REPEAT</wrap_s>
+    <wrap_t>REPEAT</wrap_t>
+    <min_filter>NEAREST</min_filter>
+    <mag_filter>NEAREST</mag_filter>
+  </sampler>
+  <program name = "main" attribs = "gPoint gTexcoord gNormal gIndex gWeight">
+    <vs>
+      precision highp float;
+      attribute vec3 gPoint;
+      attribute vec2 gTexcoord;
+      attribute vec3 gNormal;
+      attribute vec3 gIndex;
+      attribute vec3 gWeight;
+      uniform mat4 gVP;
+      uniform mat4 gWorld;
+      uniform vec4 gBones[225];
+      varying vec2 mTexcoord;
+      void main()
+      {
+        ivec3 index = ivec3(gIndex);
+        vec4 r0 = gBones[index.x * 3 + 0] * gWeight.x;
+        vec4 r1 = gBones[index.x * 3 + 1] * gWeight.x;
+        vec4 r2 = gBones[index.x * 3 + 2] * gWeight.x;
+        r0 += gBones[index.y * 3 + 0] * gWeight.y;
+        r1 += gBones[index.y * 3 + 1] * gWeight.y;
+        r2 += gBones[index.y * 3 + 2] * gWeight.y;
+        r0 += gBones[index.z * 3 + 0] * gWeight.z;
+        r1 += gBones[index.z * 3 + 1] * gWeight.z;
+        r2 += gBones[index.z * 3 + 2] * gWeight.z;
+        mat4 bone_to_world = gWorld * mat4(
+        r0[0], r1[0], r2[0], 0.0,
+        r0[1], r1[1], r2[1], 0.0,
+        r0[2], r1[2], r2[2], 0.0,
+        r0[3], r1[3], r2[3], 1.0);
+        vec4 world_pos = bone_to_world * vec4(gPoint, 1);
+        gl_Position = gVP * world_pos;
+        mTexcoord = gTexcoord;
+      }
+    </vs>
+    <fs>
+      precision highp float;
+      uniform sampler2D gBaseTex;
+      varying vec2 mTexcoord;
+      void main()
+      {
+        gl_FragColor = texture2D(gBaseTex, mTexcoord);
+      }
+    </fs>    
+  </program>
+  <pass name="p0">
+    <program name="main"/>
+    <blend src="BF_ONE" dst="BF_ZERO"/>
+    <depth func="CF_LEQUAL" mask="TRUE"/>
+    <cull mode="CULL_NONE"/>
+  </pass>
+</shader>

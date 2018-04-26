@@ -1,0 +1,69 @@
+/*
+ *  Graph.h
+ *  glare
+ *
+ *  Created by sunjun on 11-6-14.
+ *  Copyright 2011 sunstdio. All rights reserved.
+ *
+ */
+
+//////////////////////////////////////////////////////////////////////////
+
+#ifndef __Graph__
+#define __Graph__
+
+//////////////////////////////////////////////////////////////////////////
+
+#if defined __cplusplus
+
+//////////////////////////////////////////////////////////////////////////
+
+#include <Glare.h>
+
+//////////////////////////////////////////////////////////////////////////
+
+// this class provides an object-oriented Graph interface.
+class Graph 
+#ifdef USE_RENDER_THREAD
+  : public GThread
+#endif
+{
+public:
+	// constructor
+	Graph();
+
+	// destructor
+	virtual ~Graph();
+
+  // init the graph
+  VOID Init(HANDLE wnd);
+  
+  // exit the graph
+  VOID Exit();
+
+	// swap the buffer
+	VOID Swap();
+
+#ifdef USE_RENDER_THREAD
+private:
+  // the thread's run method.
+  VOID Run();
+
+private:
+  GMutex mMutex;
+  HANDLE mWnd;
+#else
+private:
+  HANDLE mDisplay, mContext, mSurface;
+#endif
+};
+
+//////////////////////////////////////////////////////////////////////////
+
+#endif // __cplusplus
+
+//////////////////////////////////////////////////////////////////////////
+
+#endif // __Graph__
+
+//////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,56 @@
+/*
+ *  Target.cpp
+ *  glare
+ *
+ *  Created by sunjun on 11-6-14.
+ *  Copyright 2011 sunstdio. All rights reserved.
+ *
+ */
+//////////////////////////////////////////////////////////////////////////
+
+#include <Engine.h>
+
+//////////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////////
+
+NAMESPACE_BEGIN(Engine)
+
+//////////////////////////////////////////////////////////////////////////
+
+  Target::Target(const TextureData* color, const TextureData* depth)
+	{
+    HANDLE c = NULL, d = NULL;
+    if(color) c = color->Handle();
+    if(depth) d = depth->Handle();
+    mHandle = RICreateRenderTarget(c, d);
+    CHECK(mHandle);
+	}
+
+	Target::~Target() 
+	{
+    if(mHandle)
+    {
+      RIDestroyRenderTarget(mHandle);
+      mHandle = NULL;
+    }
+	}
+
+  //////////////////////////////////////////////////////////////////////////
+
+  /*
+	====================
+	Bind
+	====================
+	*/
+	VOID Target::Bind()
+	{
+		CHECK(mHandle);
+    RIBindRenderTarget(mHandle);
+  }
+
+//////////////////////////////////////////////////////////////////////////
+
+NAMESPACE_END
+
+//////////////////////////////////////////////////////////////////////////

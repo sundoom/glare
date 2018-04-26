@@ -1,0 +1,38 @@
+<shader>
+  <sampler name ="gBaseTex">
+    <wrap_s>REPEAT</wrap_s>
+    <wrap_t>REPEAT</wrap_t>
+    <min_filter>NEAREST</min_filter>
+    <mag_filter>NEAREST</mag_filter>
+  </sampler>
+  <program name = "main" attribs = "gPoint gTexcoord gNormal">
+    <vs>
+      precision highp float;
+      attribute vec3 gPoint;
+      attribute vec2 gTexcoord;
+      attribute vec3 gNormal;
+      uniform mat4 gWVP;
+      varying vec2 mTexcoord;
+      void main()
+      {
+        gl_Position = gWVP * vec4(gPoint, 1);
+        mTexcoord = gTexcoord;
+      }
+    </vs>
+    <fs>
+      precision highp float;
+      uniform sampler2D gBaseTex;
+      varying vec2 mTexcoord;
+      void main()
+      {
+        gl_FragColor = texture2D(gBaseTex, mTexcoord);
+      }
+    </fs>    
+  </program>
+  <pass name="p0">
+    <program name="main"/>
+    <blend src="BF_ONE" dst="BF_ZERO"/>
+    <depth func="CF_LEQUAL" mask="TRUE"/>
+    <cull mode="CULL_NONE"/>
+  </pass>
+</shader>

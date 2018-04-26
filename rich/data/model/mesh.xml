@@ -1,0 +1,25 @@
+<static_mesh>
+  <primitive type="PT_TRIANGLES">
+    <vertex format = "VT_3F VT_2F" >
+      -1.000000   -1.000000   0.000000    0.000000    0.000000
+      1.000000    -1.000000   0.000000    1.000000    0.000000
+      1.000000    1.000000    0.000000    1.000000    1.000000
+      -1.000000   1.000000    0.000000    0.000000    1.000000
+    </vertex>
+    <index stride="2">
+      3 0 2
+      2 0 1
+    </index>
+    <shader name="shader/default.xml" pass="p0">
+      <constant name="gWVP" type="CT_MATRIX">
+        1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+      </constant>
+      <constant name="gBaseTex" type="CT_TEXTURE">
+        texture/lena.pvr
+      </constant>
+    </shader>
+    <bounding_box>
+      -1.000000 -1.000000 -1.000000 1.000000 1.000000 1.000000
+    </bounding_box>
+  </primitive>
+</static_mesh>

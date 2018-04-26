@@ -1,0 +1,93 @@
+<shader>
+  <sampler name ="gColorTex">
+    <wrap_s>REPEAT</wrap_s>
+    <wrap_t>REPEAT</wrap_t>
+    <min_filter>NEAREST</min_filter>
+    <mag_filter>NEAREST</mag_filter>
+  </sampler>
+  <sampler name ="gAlphaTex">
+    <wrap_s>REPEAT</wrap_s>
+    <wrap_t>REPEAT</wrap_t>
+    <min_filter>NEAREST</min_filter>
+    <mag_filter>NEAREST</mag_filter>
+  </sampler>
+  <program name = "base" attribs = "gPoint gTexcoord">
+    <vs>
+      precision highp float;
+      attribute vec3 gPoint;
+      attribute vec2 gTexcoord;
+      uniform mat4 gWVP;
+      uniform vec4 gScaleST;
+      varying vec2 mTexcoord0;
+      varying vec2 mTexcoord1;
+      void main()
+      {
+      gl_Position = gWVP * vec4(gPoint, 1);
+      mTexcoord0 = gTexcoord*gScaleST.xy;
+      mTexcoord1 = gTexcoord;
+      }
+    </vs>
+    <fs>
+      precision highp float;
+      uniform sampler2D gColorTex;
+      uniform sampler2D gAlphaTex;
+      varying vec2 mTexcoord0;
+      varying vec2 mTexcoord1;
+      void main()
+      {
+      vec4 color = texture2D(gColorTex, mTexcoord0);
+      float alpha = texture2D(gAlphaTex, mTexcoord1).a;
+      if((alpha*255.0) > 127.0)
+      {
+      color.a = 0.0;
+      }
+      else
+      {
+      color = color * (alpha*255.0/127.0);
+      color.a = 1.0;
+      }
+      gl_FragColor = color;
+      }
+    </fs>    
+  </program>
+  <program name = "layer" attribs = "gPoint gTexcoord">
+    <vs>
+      precision highp float;
+      attribute vec3 gPoint;
+      attribute vec2 gTexcoord;
+      uniform mat4 gWVP;
+      uniform vec4 gScaleST;
+      varying vec2 mTexcoord0;
+      varying vec2 mTexcoord1;
+      void main()
+      {
+      gl_Position = gWVP * vec4(gPoint, 1);
+      mTexcoord0 = gTexcoord*gScaleST.xy;
+      mTexcoord1 = gTexcoord;
+      }
+    </vs>
+    <fs>
+      precision highp float;
+      uniform sampler2D gColorTex;
+      uniform sampler2D gAlphaTex;
+      varying vec2 mTexcoord0;
+      varying vec2 mTexcoord1;
+      void main()
+      {
+      gl_FragColor = texture2D(gColorTex, mTexcoord0) * texture2D(gAlphaTex, mTexcoord1).a;
+      }
+    </fs>
+  </program>
+  <pass name="base">
+    <program name="base"/>
+    <blend src="BF_SRC_ALPHA" dst="BF_ONE_MINUS_SRC_ALPHA"/>
+    <depth func="CF_LEQUAL" mask="TRUE"/>
+    <cull mode="CULL_BACK"/>
+  </pass>
+  <pass name="layer">
+    <program name="layer"/>
+    <blend src="BF_ONE" dst="BF_ONE"/>
+    <depth func="CF_LEQUAL" mask="TRUE"/>
+    <cull mode="CULL_BACK"/>
+  </pass>  
+</shader>

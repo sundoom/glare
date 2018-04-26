@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rich", "rich.vcproj", "{409A7AD4-A76C-469C-AF81-483ED5F59628}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{409A7AD4-A76C-469C-AF81-483ED5F59628}.Debug|Win32.ActiveCfg = Debug|Win32
+		{409A7AD4-A76C-469C-AF81-483ED5F59628}.Debug|Win32.Build.0 = Debug|Win32
+		{409A7AD4-A76C-469C-AF81-483ED5F59628}.Release|Win32.ActiveCfg = Release|Win32
+		{409A7AD4-A76C-469C-AF81-483ED5F59628}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

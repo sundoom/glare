@@ -1,0 +1,35 @@
+<shader>
+  <program name = "main" attribs = "gPoint gTexcoord gNormal">
+    <vs>
+      precision highp float;
+      attribute vec3 gPoint;
+      attribute vec2 gTexcoord;
+      attribute vec3 gNormal;
+      uniform mat4 gWVP;
+      varying vec2 mTexcoord;
+      varying vec3 mNormal;
+      void main()
+      {
+        gl_Position = gWVP * vec4(gPoint, 1);
+        mTexcoord = gTexcoord;
+        mNormal = gNormal;
+      }
+    </vs>
+    <fs>
+      precision highp float;
+      uniform vec4 gColor;
+      varying vec2 mTexcoord;
+      varying vec3 mNormal;
+      void main()
+      {
+        gl_FragColor = gColor;
+      }
+    </fs>
+  </program>
+  <pass name="p0">
+    <program name="main"/>
+    <blend src="BF_ONE" dst="BF_ZERO"/>
+    <depth func="CF_LEQUAL" mask="TRUE"/>
+    <cull mode="CULL_NONE"/>
+  </pass>
+</shader>
